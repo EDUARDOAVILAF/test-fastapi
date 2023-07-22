@@ -29,3 +29,7 @@ Finally run this app
 ```shell
 uvicorn api:app --reload
 ```
+
+## Authors
+
+Elias Camilo Martinez Salcedo <eliascamiloms92@gmail.com>
