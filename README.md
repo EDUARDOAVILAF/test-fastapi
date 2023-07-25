@@ -34,3 +34,4 @@ uvicorn api:app --reload
 
 Elias Camilo Martinez Salcedo <eliascamiloms92@gmail.com>
 Eduardo Avila Fonseca <eeavila@ucompensar.edu.co>
+Jonathan Beltran <dnjonathanbeltran@gmail.com>
