@@ -1,47 +1,35 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from typing import List
+from fastapi import Depends, FastAPI
+from schemas import Auto
+import model
+from sqlalchemy.orm import Session
+from database import SessionLocal, engine
+from repository import create_auto, select_autos
+
+
+model.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 
-class Auto(BaseModel):
-    brand: str
-    doors: int
-    polarized: bool
-
-
-cars = [
-    Auto(brand='Mazda', doors=5, polarized=True),
-    Auto(brand='Kia', doors=4, polarized=False),
-]
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 @app.get('/cars')
-async def lists() -> list[Auto]:
-    return cars
+async def get(db: Session = Depends(get_db)) -> List[Auto]:
+    return select_autos(db)
 
 
-@app.post('/cars')
-async def create(car: Auto) -> Auto:
-    # Sugar syntax
-    exists = list(filter(lambda c: c.brand == car.brand, cars))
-    if not exists:
-        cars.append(car)
-    return car
+@app.post("/cars", response_model=Auto)
+async def create(auto: Auto, db: Session = Depends(get_db)) -> Auto:
+    return create_auto(db, auto)
 
+# Eduard Update
 
-@app.put('/cars')
-async def update(car: Auto) -> Auto:
-    for c in cars:
-        if c.brand == car.brand:
-            c.doors = car.doors
-            c.polarized = car.polarized
-            return c
-
-
-@app.delete('/cars')
-async def delete(car: Auto) -> dict:
-    for key, c in enumerate(cars):
-        if c.brand == car.brand:
-            cars.pop(key)
-            return {'message': 'Delete successfully!'}
+# Jonathan Delete
