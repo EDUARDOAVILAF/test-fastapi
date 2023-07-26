@@ -15,3 +15,9 @@ def create_auto(db: Session, auto: Auto):
     db.commit()
     db.refresh(db_auto)
     return db_auto
+
+
+def delete_auto(db: Session, auto: Auto):
+    db.query(AutoModel).filter(Auto.id == id).delete()
+    db.commit()
+    return {"delete": "success"}
