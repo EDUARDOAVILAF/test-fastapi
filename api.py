@@ -30,9 +30,11 @@ async def get(db: Session = Depends(get_db)) -> List[Auto]:
 async def create(auto: Auto, db: Session = Depends(get_db)) -> Auto:
     return create_auto(db, auto)
 
+
 @app.delete('/cars/{card_id}')
 async def delete(card_id: int, db: Session = Depends(get_db)) -> dict:
    return delete_auto(db, card_id)
+
 
 @app.put("/cars/{car_id}")
 async def update(
