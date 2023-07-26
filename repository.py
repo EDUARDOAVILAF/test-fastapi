@@ -15,3 +15,13 @@ def create_auto(db: Session, auto: Auto):
     db.commit()
     db.refresh(db_auto)
     return db_auto
+
+
+def update_auto(db: Session, auto: Auto, auto_id: int):
+    db_auto = db.query(AutoModel).filter_by(id=auto_id).first()
+    db_auto.doors = auto.doors
+    db_auto.polarized = auto.polarized
+    db.add(db_auto)
+    db.commit()
+    db.refresh(db_auto)
+    return db_auto

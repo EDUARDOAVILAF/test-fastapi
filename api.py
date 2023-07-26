@@ -4,7 +4,7 @@ from schemas import Auto
 import model
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine
-from repository import create_auto, select_autos
+from repository import create_auto, select_autos, update_auto
 
 
 model.Base.metadata.create_all(bind=engine)
@@ -30,6 +30,9 @@ async def get(db: Session = Depends(get_db)) -> List[Auto]:
 async def create(auto: Auto, db: Session = Depends(get_db)) -> Auto:
     return create_auto(db, auto)
 
-# Eduard Update
 
-# Jonathan Delete
+@app.put("/cars/{car_id}")
+async def update(
+    car_id: int, auto: Auto, db: Session = Depends(get_db)
+) -> Auto:
+    return update_auto(db, auto, car_id)
